@@ -10,34 +10,52 @@
     <el-card>
       <el-row>
         <el-col :span="6">
-          <el-input placeholder="请输入内容">
-            <el-button slot="append" icon="el-icon-search"></el-button>
+          <el-input v-model="input" placeholder="请输入内容">
+            <el-button slot="append" icon="el-icon-search" @click="searchOrderByFuzzy"></el-button>
           </el-input>
         </el-col>
       </el-row>
 
       <!-- 订单列表 -->
-      <el-table :data="orderList" border stripe>
+      <el-table :data="orderList" border stripe style="width: 100%;">
         <el-table-column type="index" label="#"></el-table-column>
         <el-table-column label="订单编号" prop="orderId"></el-table-column>
-        <el-table-column label="订单价格" prop="amount"></el-table-column>
-        <el-table-column label="是否付款">
+        <el-table-column label="消费总额 (单位:元)" prop="amount"></el-table-column>
+        <el-table-column label="是否审核">
           <template slot-scope="scope">
-            <el-tag type="danger" size="mini" v-if="scope.row.pay_status">未付款</el-tag>
-            <el-tag type="success" size="mini" v-else>已付款</el-tag>
+            <el-tag type="danger" size="medium" v-if="scope.row.status === 0">未审核</el-tag>
+            <el-tag type="success" size="medium" v-else>已审核</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="是否审核" prop="orderName"></el-table-column>
+        <el-table-column label="收货人姓名" prop="orderName"></el-table-column>
+        <el-table-column label="收货人电话" prop="orderTel"></el-table-column>
+        <el-table-column label="收货人地址" prop="orderAddress"></el-table-column>
         <el-table-column label="下单时间" prop="orderDate"></el-table-column>
         <el-table-column label="操作">
-          <template slot>
-            <el-button type="primary" size="mini" icon="el-icon-edit" @click="showEditDialog"></el-button>
+          <template slot-scope="scope">
+            <el-tooltip class="item" effect="light" open-delay="500" content="审核订单" placement="bottom" :enterable="false">
+            <el-button type="primary" size="mini" icon="el-icon-edit"
+            circle
+            @click="checkOrderById(scope.row.orderId)"></el-button>
+            </el-tooltip>
+            <el-tooltip class="item" effect="light" open-delay="500" content="查看明细" placement="bottom" :enterable="false">
             <el-button
               type="success"
               size="mini"
               icon="el-icon-location"
-              @click="showProgressDialog"
+              circle
+              @click="showOrderDetailById(scope.row.orderId)"
             ></el-button>
+            </el-tooltip>
+            <el-tooltip class="item" effect="light" open-delay="500" content="删除订单" placement="bottom" :enterable="false">
+            <el-button
+              type="danger"
+              icon="el-icon-delete"
+              size="mini"
+              circle
+              @click="removeOrderById(scope.row.orderId)"
+            ></el-button>
+            </el-tooltip>
           </template>
         </el-table-column>
       </el-table>
@@ -53,80 +71,83 @@
       ></el-pagination>
     </el-card>
 
-    <!-- 编辑对话框 -->
-    <el-dialog
-      title="修改地址"
-      :visible.sync="addressDialogVisible"
-      width="50%"
-      @close="addressDialogClosed"
-    >
-      <el-form
-        :model="addressForm"
-        :rules="addressFormRules"
-        ref="addressFormRef"
-        label-width="100px"
-      >
-        <el-form-item label="省市区/县" prop="address1">
-          <el-cascader
-            v-model="addressForm.address1"
-            :options="cityData"
-            :props="{ expandTrigger: 'hover' }"
-          ></el-cascader>
-        </el-form-item>
-        <el-form-item label="详细地址" prop="address2">
-          <el-input v-model="addressForm.address2"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="addressDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
-    </el-dialog>
-    <!-- 展示物流进度对话框 -->
-    <el-dialog title="查看物流进度" :visible.sync="progressDialogVisible" width="50%">
-    <!-- 时间线 -->
-      <el-timeline>
-        <el-timeline-item
-          v-for="(activity, index) in progressInfo"
-          :key="index"
-          :timestamp="activity.time"
-        >{{activity.context}}</el-timeline-item>
-      </el-timeline>
+    <!-- 展示物订单详情对话框 -->
+    <el-dialog title="查看订单详情" :visible.sync="progressDialogVisible" width="50%">
+    <!-- 订单详情 -->
+    <template>
+    <el-table
+        :data="tableData"
+        height="250"
+        border
+        style="width: 100%">
+        <el-table-column
+          prop="date"
+          label="书名"
+          width="180">
+        </el-table-column>
+        <el-table-column
+          prop="name"
+          label="单价"
+          width="180">
+        </el-table-column>
+        <el-table-column
+          prop="address"
+          label="购买数量">
+        </el-table-column>
+      </el-table>
+      </template>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import cityData from './citydata.js'
+// import cityData from './citydata.js'
 
 export default {
   data () {
     return {
+      // 搜索框的内容
+      input: '',
       // 订单列表查询参数
       queryInfo: {
       // query: '',
         pagenum: 1,
-        pagesize: 10
+        pagesize: 5
       },
       total: 0,
+      tableData: [
+        {
+          date: '2016-05-03',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-02',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-04',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-01',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-08',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-06',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }, {
+          date: '2016-05-07',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄'
+        }],
       // 订单列表
       orderList: [],
-      // 修改地址对话框
-      addressDialogVisible: false,
-      addressForm: {
-        address1: [],
-        address2: ''
-      },
-      addressFormRules: {
-        address1: [
-          { required: true, message: '请选择省市区县', trigger: 'blur' }
-        ],
-        address2: [
-          { required: true, message: '请输入详细地址', trigger: 'blur' }
-        ]
-      },
-      cityData,
-      // 物流进度对话框
+      // 订单详情对话框
       progressDialogVisible: false,
       // 物流进度
       progressInfo: []
@@ -136,6 +157,7 @@ export default {
     this.getOrderList()
   },
   methods: {
+    // 获取订单列表
     async getOrderList () {
       const { data: res } = await this.$http.get('/orderlist/selectAll/' + this.queryInfo.pagenum + '/' + this.queryInfo.pagesize)
       console.log(res)
@@ -145,6 +167,60 @@ export default {
       this.total = res.total
       console.log(this.total)
       this.orderList = res.records
+    },
+    // 实现删除订单
+    async removeOrderById (id) {
+      const confirmResult = await this.$confirm(
+        '此操作将永久删除该订单, 是否继续?',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      ).catch(err => err)
+      // 点击确定 返回值为：confirm
+      // 点击取消 返回值为： cancel
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('已取消删除')
+      }
+      const { data: res } = await this.$http.delete('orderlist/delete/' + id)
+      if (res.code !== 1) return this.$message.error('删除订单失败！')
+      this.$message.success('删除订单成功！')
+      this.getOrderList()
+      // console.log(res)
+    },
+    // 实现订单审核功能
+    async checkOrderById (id) {
+      const confirmResult = await this.$confirm(
+        '是否完成审核？',
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      ).catch(err => err)
+      // 点击确定 返回值为：confirm
+      // 点击取消 返回值为： cancel
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('已取消审核')
+      }
+      const { data: res } = await this.$http.put('orderlist/update/' + id)
+      if (res.code !== 1) return this.$message.error('审核订单失败！')
+      this.$message.success('审核订单成功！')
+      this.getOrderList()
+      // console.log(res)
+    },
+    // 实现搜索功能
+    async searchOrderByFuzzy () {
+      if (this.input === '') {
+        this.getOrderList()
+        return
+      }
+      const { data: res } = await this.$http.get('/orderlist/selectList/' + this.input)
+      this.total = res.length
+      this.orderList = res
     },
     // 分页
     handleSizeChange (newSize) {
@@ -161,13 +237,13 @@ export default {
     addressDialogClosed () {
       this.$refs.addressFormRef.resetFields()
     },
-    async showProgressDialog () {
-      // 供测试的物流单号：1106975712662
-      const { data: res } = await this.$http.get('/kuaidi/1106975712662')
-      if (res.meta.status !== 200) {
-        return this.$message.error('获取物流进度失败!')
-      }
-      this.progressInfo = res.data
+    // 实现查看订单明细功能
+    async showOrderDetailById (id) {
+      // const { data: res } = await this.$http.get('/kuaidi/1106975712662')
+      // if (res.meta.status !== 200) {
+      //   return this.$message.error('获取物流进度失败!')
+      // }
+      // this.progressInfo = res.data
       this.progressDialogVisible = true
     }
   }

@@ -8,16 +8,24 @@
       <!-- 登录表单 -->
       <div>
         <el-form
+          status-icon
           ref="loginFormRef"
           :model="loginForm"
-          :rules="loginFormRules"
           label-width="60px"
           class="login_form"
         >
-          <el-form-item label="账号" prop="username">
-            <el-input v-model="loginForm.username" prefix-icon="iconfont icon-user"></el-input>
+          <el-form-item label="邮箱" prop="email"
+          :rules="[
+            { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+          ]">
+            <el-input v-model="loginForm.email" prefix-icon="iconfont icon-user"></el-input>
           </el-form-item>
-          <el-form-item label="密码" prop="password">
+          <el-form-item label="密码" prop="password"
+          :rules="[
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: ['blur', 'change'] }
+          ]">
             <el-input
               v-model="loginForm.password"
               type="password"
@@ -39,20 +47,20 @@ export default {
   data () {
     return {
       loginForm: {
-        username: '',
+        email: '',
         password: ''
-      },
-      // 表单验证
-      loginFormRules: {
-        username: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
-        ],
-        password: [
-          { required: true, message: '请输入用户密码', trigger: 'blur' },
-          { min: 3, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
-        ]
       }
+      // 表单验证
+      // loginFormRules: {
+      //   email: [
+      //     { required: true, message: '请输入用户名', trigger: 'blur' },
+      //     { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+      //   ],
+      //   password: [
+      //     { required: true, message: '请输入用户密码', trigger: 'blur' },
+      //     { min: 3, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+      //   ]
+      // }
     }
   },
   methods: {
@@ -68,9 +76,8 @@ export default {
       this.$refs.loginFormRef.validate(async valid => {
         // console.log(valid)
         if (!valid) return false
-        // this.$http.post('login', this.loginForm): 返回值为promise
         // 返回值为promise，可加await简化操作 相应的也要加async
-        const { data: res } = await this.$http.get('/employee/employeeLogin/' + this.loginForm.username + '/' + this.loginForm.password)
+        const { data: res } = await this.$http.get('/employee/employeeLogin/' + this.loginForm.email + '/' + this.loginForm.password)
         console.log(res)
         if (res.code === 0) return this.$message.error(res.msg)
         this.$message.success('登录成功')
