@@ -10,7 +10,7 @@
     <el-card>
       <el-row>
         <el-col :span="6">
-          <el-input v-model="input" placeholder="请输入内容">
+          <el-input v-model="input" placeholder="请输入内容" clearable @clear="getOrderList">
             <el-button slot="append" icon="el-icon-search" @click="searchOrderByFuzzy"></el-button>
           </el-input>
         </el-col>
@@ -81,18 +81,18 @@
         border
         style="width: 100%">
         <el-table-column
-          prop="date"
+          prop="bookName"
           label="书名"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="name"
-          label="单价"
+          prop="price"
+          label="单价 (单位:元)"
           width="180">
         </el-table-column>
         <el-table-column
-          prop="address"
-          label="购买数量">
+          prop="num"
+          label="购买数量 (单位:本)">
         </el-table-column>
       </el-table>
       </template>
@@ -101,8 +101,6 @@
 </template>
 
 <script>
-// import cityData from './citydata.js'
-
 export default {
   data () {
     return {
@@ -110,47 +108,16 @@ export default {
       input: '',
       // 订单列表查询参数
       queryInfo: {
-      // query: '',
+        query: '',
         pagenum: 1,
         pagesize: 5
       },
       total: 0,
-      tableData: [
-        {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-08',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-06',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-07',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }],
+      tableData: [],
       // 订单列表
       orderList: [],
       // 订单详情对话框
-      progressDialogVisible: false,
-      // 物流进度
-      progressInfo: []
+      progressDialogVisible: false
     }
   },
   created () {
@@ -159,13 +126,17 @@ export default {
   methods: {
     // 获取订单列表
     async getOrderList () {
+      if (this.input !== '') {
+        this.searchOrderByFuzzy()
+        return
+      }
       const { data: res } = await this.$http.get('/orderlist/selectAll/' + this.queryInfo.pagenum + '/' + this.queryInfo.pagesize)
       console.log(res)
       if (res.pages === 0) {
         return this.$message.error('获取订单列表失败！')
       }
       this.total = res.total
-      console.log(this.total)
+      // console.log(this.total)
       this.orderList = res.records
     },
     // 实现删除订单
@@ -218,9 +189,10 @@ export default {
         this.getOrderList()
         return
       }
-      const { data: res } = await this.$http.get('/orderlist/selectList/' + this.input)
-      this.total = res.length
-      this.orderList = res
+      const { data: res } = await this.$http.get('/orderlist/selectList/' + this.input + '/' + this.queryInfo.pagenum + '/' + this.queryInfo.pagesize)
+      console.log(res)
+      this.total = res.total
+      this.orderList = res.records
     },
     // 分页
     handleSizeChange (newSize) {
@@ -239,11 +211,9 @@ export default {
     },
     // 实现查看订单明细功能
     async showOrderDetailById (id) {
-      // const { data: res } = await this.$http.get('/kuaidi/1106975712662')
-      // if (res.meta.status !== 200) {
-      //   return this.$message.error('获取物流进度失败!')
-      // }
-      // this.progressInfo = res.data
+      const { data: res } = await this.$http.get('/orderdetail/findByOrderId/' + id)
+      console.log(res)
+      this.tableData = res
       this.progressDialogVisible = true
     }
   }
