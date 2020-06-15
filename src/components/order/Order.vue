@@ -17,7 +17,7 @@
       </el-row>
 
       <!-- 订单列表 -->
-      <el-table :data="orderList" border stripe style="width: 100%;">
+      <el-table :data="orderList" border stripe style="width: 100%;" >
         <el-table-column type="index" label="#"></el-table-column>
         <el-table-column label="订单编号" prop="orderId"></el-table-column>
         <el-table-column label="消费总额 (单位:元)" prop="amount"></el-table-column>
@@ -64,7 +64,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="queryInfo.pagenum"
-        :page-sizes="[5, 10, 15, 20]"
+        :page-sizes="[5, 10, 15, 20, 25, 30, 35]"
         :page-size="queryInfo.pagesize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"

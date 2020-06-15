@@ -34,6 +34,15 @@
                 <span>用户列表</span>
               </template>
             </el-menu-item>
+            <el-menu-item index="/employee" @click="saveNavState('/employee')">
+              <!-- 导航开启路由模式：
+                将index值作为导航路由 -->
+              <!-- 二级菜单的模板区域 -->
+              <template slot="title">
+                <i class="el-icon-menu"></i>
+                <span>职员列表</span>
+              </template>
+            </el-menu-item>
           </el-submenu>
           <el-submenu index="2" >
             <!-- 一级菜单的模板区域 -->
