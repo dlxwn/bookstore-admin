@@ -84,11 +84,11 @@
         <el-form-item label="姓名" prop="name">
           <el-input v-model="addUserForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="性别">
-          <el-select v-model="addUserForm.sex" placeholder="性别">
-            <el-option label="男" value="男"></el-option>
-            <el-option label="女" value="女"></el-option>
-          </el-select>
+        <el-form-item label="性别" prop="sex">
+          <el-radio-group size="medium">
+            <el-radio border v-model="addUserForm.sex"  label="男"></el-radio>
+            <el-radio border v-model="addUserForm.sex"  label="女"></el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="生日" prop="birthday">
           <div class="block">
@@ -144,7 +144,7 @@
           <el-input v-model="editUserForm.nickName"></el-input>
         </el-form-item>
         <el-form-item label="性别">
-          <el-select v-model="addUserForm.sex" placeholder="性别">
+          <el-select v-model="editUserForm.sex" placeholder="性别">
             <el-option label="男" value="男"></el-option>
             <el-option label="女" value="女"></el-option>
           </el-select>
@@ -303,7 +303,7 @@ export default {
           { validator: checkEmail, trigger: 'blur' }
         ]
       },
-      exportUserUrl: 'http://localhost:8088/bookstore/user/export'
+      exportUserURL: 'http://localhost:8088/bookstore/user/export'
     }
   },
   created () {
@@ -329,7 +329,7 @@ export default {
       this.totle = res.total
     },
     async exportUser () {
-      window.location.href = this.exportUserUrl
+      window.location.href = this.exportUserURL
     },
     // 监听 pagesize改变的事件
     handleSizeChange (newSize) {
