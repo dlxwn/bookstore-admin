@@ -80,7 +80,7 @@ export default {
         // 返回值为promise，可加await简化操作 相应的也要加async
         const { data: res } = await this.$http.get('/employee/employeeLogin/' + this.loginForm.email + '/' + this.loginForm.password)
         console.log(res)
-        if (res.code !== 200) return this.$message.error(res.msg)
+        if (res.code === 0) return this.$message.error(res.msg)
         this.$message.success('登录成功')
         // 1、将登陆成功之后的token, 保存到客户端的sessionStorage中; localStorage中是持久化的保存
         //   1.1 项目中出现了登录之外的其他API接口，必须在登陆之后才能访问

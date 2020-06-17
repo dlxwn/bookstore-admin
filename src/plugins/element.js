@@ -4,7 +4,7 @@ import { Button, Form, FormItem, Input, Message, Container, Header,
   BreadcrumbItem, Card, Row, Col, Table, TableColumn, Switch, Tooltip, Pagination,
   Dialog, MessageBox, Tag, Tree, Select, Option, Cascader, Alert, Tabs, TabPane,
   Step, Steps, Checkbox, CheckboxGroup, Upload,
-  Timeline, TimelineItem, Radio, DatePicker, Calendar } from 'element-ui'
+  Timeline, TimelineItem, Radio, DatePicker, Calendar, InputNumber } from 'element-ui'
 
 Vue.use(DatePicker)
 Vue.use(Calendar)
