@@ -4,7 +4,7 @@
     <el-header>
       <div>
         <img src="../assets/logo.png" alt />
-        <span>电商后台管理系统</span>
+        <span>网上书店后台管理系统</span>
       </div>
       <el-button type="info" @click="logout">退出</el-button>
     </el-header>
@@ -68,22 +68,13 @@
               <span>图书管理</span>
             </template>
             <!-- 二级菜单 -->
-            <el-menu-item index="/goods" @click="saveNavState('/goods')">
+            <el-menu-item index="/books" @click="saveNavState('/books')">
               <!-- 导航开启路由模式：
                 将index值作为导航路由 -->
               <!-- 二级菜单的模板区域 -->
               <template slot="title">
                 <i class="el-icon-menu"></i>
                 <span>商品列表</span>
-              </template>
-            </el-menu-item>
-            <el-menu-item index="/params" @click="saveNavState('/params')">
-              <!-- 导航开启路由模式：
-                将index值作为导航路由 -->
-              <!-- 二级菜单的模板区域 -->
-              <template slot="title">
-                <i class="el-icon-menu"></i>
-                <span>分类参数</span>
               </template>
             </el-menu-item>
             <el-menu-item index="/categories" @click="saveNavState('/categories')">

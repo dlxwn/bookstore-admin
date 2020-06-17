@@ -9,11 +9,11 @@ import VueRouter from 'vue-router'
 // import Rights from '../components/power/Rights.vue'
 // import Roles from '../components/power/Roles.vue'
 
-// import Cate from '../components/goods/Cate.vue'
-// import Params from '../components/goods/Params.vue'
+// import Cate from '../components/books/Cate.vue'
+// import Params from '../components/books/Params.vue'
 
-// import GoodsList from '../components/goods/List.vue'
-// import Add from '../components/goods/Add.vue'
+// import BooksList from '../components/books/List.vue'
+// import Add from '../components/books/Add.vue'
 
 // import Order from '../components/order/Order.vue'
 // import Report from '../components/report/Report.vue'
@@ -27,11 +27,9 @@ const Users = () => import(/* webpackChunkName: "Users_Rights_Roles" */ '../comp
 const Rights = () => import(/* webpackChunkName: "Users_Rights_Roles" */ '../components/power/Rights.vue')
 const Roles = () => import(/* webpackChunkName: "Users_Rights_Roles" */ '../components/power/Roles.vue')
 
-const Cate = () => import(/* webpackChunkName: "Cate_Params" */ '../components/goods/Cate.vue')
-const Params = () => import(/* webpackChunkName: "Cate_Params" */ '../components/goods/Params.vue')
+const Cate = () => import(/* webpackChunkName: "Cate_Params" */ '../components/books/Cate.vue')
 
-const GoodsList = () => import(/* webpackChunkName: "GoodsList_Add" */ '../components/goods/List.vue')
-const Add = () => import(/* webpackChunkName: "GoodsList_Add" */ '../components/goods/Add.vue')
+const BooksList = () => import(/* webpackChunkName: "BooksList_Add" */ '../components/books/List.vue')
 
 const Order = () => import(/* webpackChunkName: "Order_Report" */ '../components/order/Order.vue')
 const Report = () => import(/* webpackChunkName: "Order_Report" */ '../components/report/Report.vue')
@@ -50,9 +48,7 @@ const routes = [
       { path: '/rights', component: Rights },
       { path: '/roles', component: Roles },
       { path: '/categories', component: Cate },
-      { path: '/params', component: Params },
-      { path: '/goods', component: GoodsList },
-      { path: '/goods/add', component: Add },
+      { path: '/books', component: BooksList },
       { path: '/orders', component: Order },
       { path: '/reports', component: Report }
     ] }
