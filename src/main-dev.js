@@ -20,6 +20,7 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
 import axios from 'axios'
+
 // 配置请求根路径
 // 本机地址
 axios.defaults.baseURL = 'http://localhost:8088/bookstore'
