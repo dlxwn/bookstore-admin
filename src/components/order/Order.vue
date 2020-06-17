@@ -81,6 +81,14 @@
         border
         style="width: 100%">
         <el-table-column
+          label="图片"
+          align="center"
+        >
+        <template slot-scope="scope">
+          <img :src="scope.row.bookPicture" width="50" height="50" />
+        </template>
+        </el-table-column>
+        <el-table-column
           prop="bookName"
           label="书名"
           width="180">

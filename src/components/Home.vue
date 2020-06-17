@@ -13,7 +13,7 @@
       <!-- 侧边栏 -->
       <el-aside :width="isCollapse ? '64px' : '200px'">
         <div class="toggle-button" @click="togleCollapse">|||</div>
-        <el-menu unique-opened :collapse="isCollapse" :collapse-transition="false" router :default-active="activePath" background-color="#333744" text-color="#fff" active-text-color="#409FFF">
+        <el-menu unique-opened :collapse="isCollapse" :collapse-transition="false" router :default-active="activePath" background-color="#304156" text-color="#fff" active-text-color="#409FFF">
            <!-- :unique-opened="true"->只允许展开一个菜单 -->
            <!-- :collapse-transition="false" -> 关闭动画 -->
            <!-- router -> 导航开启路由模式 -->
@@ -177,7 +177,7 @@ export default {
   height: 100%;
 }
 .el-header {
-  background-color: #373f41;
+  background-color: #404546;
   display: flex;
   justify-content: space-between;
   padding-left: 0;
@@ -193,20 +193,20 @@ export default {
   }
 }
 .el-aside {
-  background-color: #333744;
+  background-color: #304156;
 
   .el-menu {
     border: none;
   }
 }
 .el-main {
-  background-color: #eaedf1;
+  background-color: #F0F2F5;
 }
 .iconfont{
   margin-right: 10px;
 }
 .toggle-button {
-  background-color: #4A5064;
+  background-color: #304156;
   font-size: 10px;
   line-height: 24px;
   color: #fff;

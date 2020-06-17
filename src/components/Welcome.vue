@@ -14,7 +14,7 @@
             </div>
             <animate-number
                   from="1"
-                  to="12346"
+                  to="10083"
                   duration="1500"
                   easing="easeOutQuad"
                   from-color="#ec4949"
@@ -98,8 +98,12 @@
         </el-col>
     </el-row>
     <el-row>
-      <div :span="16">
-        <div id="main" style="width: 93%; height: 500px;background-color: rgb(255,255,255);padding: 16px 16px 0;margin-left: 30px;"></div>
+      <div :span="16" style="width: 93%; height: 500px;background-color: rgb(255,255,255);padding: 16px 16px 0;margin-left: 30px;">
+        <div id="main" style="width: 100%;height: 100%;"></div>
+      </div>
+      <div :span="16" style="width: 93%; height: 500px;background-color: rgb(255,255,255);padding: 16px 16px 0;margin-left: 30px;">
+        <div id="main_left" style="width: 45%; height: 100%;float: left;"></div>
+        <div id="main-right" style="width: 55%; height: 100%;float: left;"></div>
       </div>
     </el-row>
   </div>
@@ -115,7 +119,9 @@ export default {
   // 此时,页面上的元素,已经被渲染完毕了
   async mounted () {
     // 3.基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('main'))
+    var myChart = echarts.init(document.getElementById('main'), 'light')
+    var myChar2 = echarts.init(document.getElementById('main_left'), 'light')
+    var myChar3 = echarts.init(document.getElementById('main-right'))
     // 4.准备数据项和配置项
     // 指定图表的配置项和数据
     var option = {
@@ -174,10 +180,103 @@ export default {
         }
       ]
     }
+    var option2 = {
+      title: {
+        text: '图书类目统计',
+        left: 'center'
+      },
+      tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b}: {c} ({d}%)'
+      },
+      legend: {
+        orient: 'vertical',
+        left: 10,
+        data: ['成功励志类', '人文社科类', '文艺类', '科技类', '动漫类', '专业书', '童书', '小说类', '经管类', '教育类', '生活类']
+      },
+      series: [
+        {
+          name: '图书类别',
+          type: 'pie',
+          radius: ['50%', '70%'],
+          avoidLabelOverlap: false,
+          label: {
+            show: false,
+            position: 'center'
+          },
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: '30',
+              fontWeight: 'bold'
+            }
+          },
+          labelLine: {
+            show: false
+          },
+          data: [
+            { value: 335, name: '教育类' },
+            { value: 310, name: '小说类' },
+            { value: 234, name: '文艺类' },
+            { value: 135, name: '科技类' },
+            { value: 140, name: '动漫类' },
+            { value: 130, name: '专业书' },
+            { value: 120, name: '童书' },
+            { value: 110, name: '人文社科类' },
+            { value: 80, name: '经管类' },
+            { value: 90, name: '成功励志类' },
+            { value: 70, name: '生活类' }
+          ]
+        }
+      ]
+    }
+    var option3 = {
+      color: ['#96BFFF'],
+      title: {
+        text: '图书月销榜',
+        left: 'center'
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow'
+        }
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: [
+        {
+          type: 'category',
+          data: ['九条命的猫', '无声告白', '克隆版大脑', '倾城之恋', '一千零一夜'],
+          axisTick: {
+            alignWithLabel: true
+          }
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value'
+        }
+      ],
+      series: [
+        {
+          name: '月销量',
+          type: 'bar',
+          barWidth: '50%',
+          data: [80, 75, 70, 68, 60]
+        }
+      ]
+    }
     // 数据合并
     //  const result = _.merge(res.data, this.options)
     // 5.展示数据
     myChart.setOption(option)
+    myChar2.setOption(option2)
+    myChar3.setOption(option3)
   }
 }
 </script>
