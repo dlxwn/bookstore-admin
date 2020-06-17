@@ -2,9 +2,9 @@
   <el-container>
     <!-- 头部 -->
     <el-header>
-      <div>
-        <img src="../assets/logo.png" alt />
-        <span>电商后台管理系统</span>
+      <div class="avator">
+        <img src="http://www.sineava.top/img/logo.47ae5af0.png" alt />
+        <span>网上书店管理系统</span>
       </div>
       <el-button type="info" @click="logout">退出</el-button>
     </el-header>
@@ -187,9 +187,6 @@ export default {
   > div {
     display: flex;
     align-items: center;
-    img {
-      height: 40px;
-    }
     span {
       margin-left: 15px;
     }
@@ -217,5 +214,14 @@ export default {
   letter-spacing: 0.2em;
   // 鼠标放上去变成小手
   cursor: pointer;
+}
+.avator {
+  height: 50px;
+  margin-left: 10px;
+  img{
+    width: 50px;
+    height:50px;
+    border-radius: 50%;
+  }
 }
 </style>

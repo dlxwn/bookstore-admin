@@ -3,7 +3,7 @@
     <div class="login_box">
       <!-- 头像区 -->
       <div class="avatar_box">
-        <img src="../assets/logo.png" alt="avatar" />
+        <img src="http://www.sineava.top/img/logo.47ae5af0.png" alt="avatar" />
       </div>
       <!-- 登录表单 -->
       <div>
@@ -14,6 +14,7 @@
           label-width="60px"
           class="login_form"
         >
+        <h3 class="title">网上书店管理系统</h3>
           <el-form-item label="邮箱" prop="email"
           :rules="[
             { required: true, message: '请输入邮箱地址', trigger: 'blur' },
@@ -97,8 +98,16 @@ export default {
 /* // lang="less" 支持less格式
 // scoped vue的指令，只在当前组件生效 */
 .login_container {
-  background-color: #2b4b6b;
+  background-image: url("https://el-admin.xin/static/img/background.9fbb9927.jpg");
+  align-items: center;
+  background-size: cover;
   height: 100%;
+}
+.title{
+  text-align: center;
+  color: #707070;
+  margin: auto auto;
+  padding: 10px 0 10px 0;
 }
 .login_box {
   width: 450px;
@@ -132,9 +141,9 @@ export default {
 }
 .login_form {
   position: absolute;
-  bottom: 60px;
+  bottom: 50px;
   width: 100%;
-  padding: 0 20px;
+  padding: 0px 20px 0px 10px;
   box-sizing: border-box;
 }
 .btns {
