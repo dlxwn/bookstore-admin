@@ -29,7 +29,7 @@
         <el-table-column prop="empId" label="#"></el-table-column>
         <el-table-column prop="name" label="姓名"></el-table-column>
         <el-table-column prop="sex" label="性别"></el-table-column>
-        <el-table-column prop="email" label="邮箱"></el-table-column>
+        <el-table-column prop="email" label="邮箱" min-width="130px"></el-table-column>
         <el-table-column prop="salary" label="工资"></el-table-column>
         <el-table-column prop="phoneNumber" label="联系方式"></el-table-column>
         <el-table-column prop="department" label="所属部门"></el-table-column>

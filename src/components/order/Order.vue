@@ -220,7 +220,7 @@ export default {
     // 实现查看订单明细功能
     async showOrderDetailById (id) {
       const { data: res } = await this.$http.get('/orderdetail/findByOrderId/' + id)
-      console.log(res)
+      // console.log(res)
       this.tableData = res
       this.progressDialogVisible = true
     }
