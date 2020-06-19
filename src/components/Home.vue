@@ -129,6 +129,7 @@ export default {
     return {
       // 左侧菜单数据
       menuList: [],
+      currentInfo: [],
       iconObj: {
         '125': 'iconfont icon-user',
         '103': 'iconfont icon-tijikongjian',
@@ -144,6 +145,7 @@ export default {
   },
   created () {
     this.activePath = window.sessionStorage.getItem('activePath')
+    this.getPerms()
   },
   methods: {
     logout () {
@@ -158,6 +160,9 @@ export default {
     // 保存连接的激活地址
     saveNavState (activePath) {
       window.sessionStorage.setItem('activePath', activePath)
+    },
+    // 用来获取用户的信息
+    getPerms () {
     }
   }
 }
