@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import Global from './Global.vue'
 import './plugins/element.js'
 // 导入全局样式
 import './assets/css/global.css'
@@ -14,13 +15,13 @@ import VueQuillEditor from 'vue-quill-editor'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
-
 // 导入NProgress, 包对应的JS和CSS
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
 import axios from 'axios'
 
+Vue.prototype.curuse = Global
 // 配置请求根路径
 // 本机地址
 axios.defaults.baseURL = 'http://localhost:8088/bookstore'

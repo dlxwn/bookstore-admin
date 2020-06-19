@@ -28,7 +28,7 @@
         border：边框-->
         <el-table-column prop="userId" label="#"></el-table-column>
         <el-table-column prop="nickName" label="昵称"></el-table-column>
-        <el-table-column prop="email" label="邮箱"></el-table-column>
+        <el-table-column prop="email" label="邮箱" min-width="100px"></el-table-column>
         <el-table-column prop="phoneNumber" label="电话"></el-table-column>
         <el-table-column prop="sex" label="性别"></el-table-column>
         <el-table-column prop="address" label="地址"></el-table-column>

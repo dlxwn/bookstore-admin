@@ -9,14 +9,15 @@
     <!-- 卡片视图 -->
     <el-card>
       <el-table :data="rightsList" border stripe>
-        <el-table-column type="index" label="#"></el-table-column>
-        <el-table-column label="权限名称" prop="authName"></el-table-column>
-        <el-table-column label="路径" prop="path"></el-table-column>
-        <el-table-column label="权限等级" prop="level">
-          <template slot-scope="scope">
-            <el-tag v-if="scope.row.level === '0'">一级</el-tag>
-            <el-tag type="success" v-else-if="scope.row.level === '1'">二级</el-tag>
-            <el-tag type="danger" v-else>三级</el-tag>
+        <el-table-column type="index" label="#" align="center"></el-table-column>
+        <el-table-column label="角色名称" prop="name" align="center"></el-table-column>
+        <el-table-column label="职 务" prop="position" align="center"></el-table-column>
+        <el-table-column label="权 限" prop="level" align="center">
+          <template>
+            <el-switch
+            v-model="value1"
+            @click="change">
+            </el-switch>
           </template>
         </el-table-column>
       </el-table>
@@ -28,20 +29,35 @@
 export default {
   data () {
     return {
+      queryInfo: {
+        query: '',
+        current: 1,
+        size: 10
+      },
       // 权限列表
-      rightsList: []
+      rightsList: [],
+      userInfo: [],
+      value1: true
     }
   },
   created () {
     this.getRightsList()
+    this.getUserInfo()
   },
   methods: {
     async getRightsList () {
-      const { data: res } = await this.$http.get('rights/list')
-      if (res.meta.status !== 200) {
+      const { data: res } = await this.$http.get('/employee/findAll/' + this.queryInfo.current + '/' + this.queryInfo.size)
+      console.log(res)
+      if (res.pages === 0) {
         return this.$message.error('获取权限列表失败！')
       }
-      this.rightsList = res.data
+      this.$message.success('获取权限列表成功')
+      this.rightsList = res.records
+    },
+    getUserInfo () {
+    },
+    changeSwitch (data) {
+      console.log(data)
     }
   }
 }

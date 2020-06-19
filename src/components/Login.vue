@@ -79,7 +79,9 @@ export default {
         if (!valid) return false
         // 返回值为promise，可加await简化操作 相应的也要加async
         const { data: res } = await this.$http.get('/employee/employeeLogin/' + this.loginForm.email + '/' + this.loginForm.password)
-        console.log(res)
+        // console.log(res)
+        this.curuse.curdata = res
+        console.log(this.curuse.curdata)
         if (res.code === 0) return this.$message.error(res.msg)
         this.$message.success('登录成功')
         // 1、将登陆成功之后的token, 保存到客户端的sessionStorage中; localStorage中是持久化的保存

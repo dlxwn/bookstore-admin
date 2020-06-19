@@ -34,7 +34,7 @@
                 <span>用户列表</span>
               </template>
             </el-menu-item>
-            <el-menu-item index="/employee" @click="saveNavState('/employee')">
+            <el-menu-item :disabled=isAdmin index="/employee" @click="saveNavState('/employee')">
               <!-- 导航开启路由模式：
                 将index值作为导航路由 -->
               <!-- 二级菜单的模板区域 -->
@@ -129,6 +129,7 @@ export default {
     return {
       // 左侧菜单数据
       menuList: [],
+      currentInfo: [],
       iconObj: {
         '125': 'iconfont icon-user',
         '103': 'iconfont icon-tijikongjian',
@@ -139,11 +140,15 @@ export default {
       // 默认不折叠
       isCollapse: false,
       // 被激活导航地址
-      activePath: ''
+      activePath: '',
+      isAdmin: true
     }
   },
   created () {
     this.activePath = window.sessionStorage.getItem('activePath')
+    if (this.curuse.curdata.data.isAdmin === '1') {
+      this.isAdmin = false
+    }
   },
   methods: {
     logout () {
@@ -158,6 +163,9 @@ export default {
     // 保存连接的激活地址
     saveNavState (activePath) {
       window.sessionStorage.setItem('activePath', activePath)
+    },
+    // 用来获取用户的信息
+    getPerms () {
     }
   }
 }

@@ -10,18 +10,9 @@
           </div>
           <div class="data_box">
             <div class="description">
-              总营业额{{totalNum}}
+              总营业额
             </div>
-            <animate-number
-                  :from="mystart"
-                  :to="totalNum"
-                  duration="1500"
-                  easing="easeOutQuad"
-                  from-color="#ec4949"
-                  to-color="#5FAF96"
-                  :formatter="formatter"
-                  class="data"
-             ></animate-number>
+            <div class="data">{{totalNum}}</div>
           </div>
         </div>
       </el-col>
@@ -37,16 +28,7 @@
             <div class="description">
               用户数量
             </div>
-            <animate-number
-                  from="1"
-                  to="12346"
-                  duration="1500"
-                  easing="easeOutQuad"
-                  from-color="#ec4949"
-                  to-color="#5FAF96"
-                  :formatter="formatter"
-                  class="data"
-             ></animate-number>
+           <div class="data">{{totalUser}}</div>
           </div>
         </div>
       </el-col>
@@ -60,16 +42,7 @@
             <div class="description">
               订单数量
             </div>
-            <animate-number
-                  from="1"
-                  to="12346"
-                  duration="1500"
-                  easing="easeOutQuad"
-                  from-color="#ec4949"
-                  to-color="#5FAF96"
-                  :formatter="formatter"
-                  class="data"
-             ></animate-number>
+            <div class="data">{{totalOrder}}</div>
           </div>
         </div>
       </el-col>
@@ -83,16 +56,7 @@
             <div class="description">
               评论数量
             </div>
-            <animate-number
-                  from="1"
-                  to="12346"
-                  duration="1500"
-                  easing="easeOutQuad"
-                  from-color="#ec4949"
-                  to-color="#5FAF96"
-                  :formatter="formatter"
-                  class="data"
-             ></animate-number>
+            <div class="data">{{totalCom}}</div>
           </div>
         </div>
         </el-col>
@@ -116,25 +80,8 @@ import Vue from 'vue'
 import VueAnimateNumber from 'vue-animate-number'
 Vue.use(VueAnimateNumber)
 export default {
-  data () {
-    return {
-      mystart: 0,
-      totalNum: 80
-    }
-  },
-  created () {
-    this.getTotalNum()
-    // this.getTotalOrder()
-  },
-  methods: {
-    async getTotalNum () {
-      const { data: res } = await this.$http.get('/orderlist/total')
-      console.log(res)
-      this.totalNum = res
-    }
-  },
   // 此时,页面上的元素,已经被渲染完毕了
-  async mounted () {
+  mounted () {
     // 3.基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById('main'), 'light')
     var myChar2 = echarts.init(document.getElementById('main_left'), 'light')
@@ -209,7 +156,7 @@ export default {
       legend: {
         orient: 'vertical',
         left: 10,
-        data: ['成功励志类', '人文社科类', '文艺类', '科技类', '动漫类', '专业书', '童书', '小说类', '经管类', '教育类', '生活类']
+        data: ['成功励志类', '人文社科', '教育', '小说', '文艺', '专业书', '动漫', '童书', '经管', '生活', '科技']
       },
       series: [
         {
@@ -231,22 +178,19 @@ export default {
           labelLine: {
             show: false
           },
-          data: [
-            { value: 335, name: '教育类' },
-            { value: 310, name: '小说类' },
-            { value: 234, name: '文艺类' },
-            { value: 135, name: '科技类' },
-            { value: 140, name: '动漫类' },
-            { value: 130, name: '专业书' },
-            { value: 120, name: '童书' },
-            { value: 110, name: '人文社科类' },
-            { value: 80, name: '经管类' },
-            { value: 90, name: '成功励志类' },
-            { value: 70, name: '生活类' }
-          ]
+          data: []
         }
       ]
     }
+    this.$http.get('/bookclassify/nameandcnt').then(res => {
+      myChar2.setOption({
+        series: [
+          {
+            data: res.data
+          }
+        ]
+      })
+    })
     var option3 = {
       color: ['#96BFFF'],
       title: {
@@ -268,7 +212,7 @@ export default {
       xAxis: [
         {
           type: 'category',
-          data: ['九条命的猫', '无声告白', '克隆版大脑', '倾城之恋', '一千零一夜'],
+          data: [],
           axisTick: {
             alignWithLabel: true
           }
@@ -284,16 +228,67 @@ export default {
           name: '月销量',
           type: 'bar',
           barWidth: '50%',
-          data: [80, 75, 70, 68, 60]
+          data: []
         }
       ]
     }
+    this.$http.get('/book/top5').then(res => {
+      myChar3.setOption({
+        xAxis: [
+          {
+            data: res.data.cp,
+            axisLabel: {
+              interval: 0,
+              rotate: 0
+            }
+          }
+        ],
+        series: [
+          {
+            data: res.data.product
+          }
+        ]
+      })
+    })
     // 数据合并
     //  const result = _.merge(res.data, this.options)
     // 5.展示数据
     myChart.setOption(option)
     myChar2.setOption(option2)
     myChar3.setOption(option3)
+  },
+  data () {
+    return {
+      totalNum: 0,
+      totalCom: 0,
+      totalOrder: 0,
+      totalUser: 0
+    }
+  },
+  created () {
+    this.getTotalNum()
+    this.getTotalOrder()
+    this.getTotalUser()
+    this.getTotalCom()
+  },
+  methods: {
+    async getTotalNum () {
+      const { data: res } = await this.$http.get('/orderlist/total/amount')
+      this.totalNum = parseFloat(res).toFixed(2)
+      console.log(this.curuse.curdata)
+    },
+    async getTotalOrder () {
+      const { data: res } = await this.$http.get('/orderlist/total')
+      this.totalOrder = res
+    },
+    async getTotalUser () {
+      const { data: res } = await this.$http.get('/user/total/')
+      this.totalUser = res
+    },
+    async getTotalCom () {
+      const { data: res } = await this.$http.get('/comment/total')
+      this.totalCom = res
+    }
   }
 }
 </script>
@@ -334,5 +329,6 @@ div{
 }
 .data{
   font-size: 20px;
+  color: #5FAF96;
 }
 </style>
