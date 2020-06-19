@@ -129,6 +129,7 @@ export default {
     return {
       // 左侧菜单数据
       menuList: [],
+      currentInfo: [],
       iconObj: {
         '125': 'iconfont icon-user',
         '103': 'iconfont icon-tijikongjian',
@@ -148,7 +149,6 @@ export default {
     if (this.curuse.curdata.data.isAdmin === '1') {
       this.isAdmin = false
     }
-    console.log(this.isAdmin)
   },
   methods: {
     logout () {
@@ -163,6 +163,9 @@ export default {
     // 保存连接的激活地址
     saveNavState (activePath) {
       window.sessionStorage.setItem('activePath', activePath)
+    },
+    // 用来获取用户的信息
+    getPerms () {
     }
   }
 }
