@@ -275,6 +275,7 @@ export default {
     async getTotalNum () {
       const { data: res } = await this.$http.get('/orderlist/total/amount')
       this.totalNum = parseFloat(res).toFixed(2)
+      console.log(this.curuse.curdata)
     },
     async getTotalOrder () {
       const { data: res } = await this.$http.get('/orderlist/total')

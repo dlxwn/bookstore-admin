@@ -34,7 +34,7 @@
                 <span>用户列表</span>
               </template>
             </el-menu-item>
-            <el-menu-item index="/employee" @click="saveNavState('/employee')">
+            <el-menu-item :disabled=isAdmin index="/employee" @click="saveNavState('/employee')">
               <!-- 导航开启路由模式：
                 将index值作为导航路由 -->
               <!-- 二级菜单的模板区域 -->
@@ -139,11 +139,16 @@ export default {
       // 默认不折叠
       isCollapse: false,
       // 被激活导航地址
-      activePath: ''
+      activePath: '',
+      isAdmin: true
     }
   },
   created () {
     this.activePath = window.sessionStorage.getItem('activePath')
+    if (this.curuse.curdata.data.isAdmin === '1') {
+      this.isAdmin = false
+    }
+    console.log(this.isAdmin)
   },
   methods: {
     logout () {
