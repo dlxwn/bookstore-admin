@@ -10,11 +10,11 @@
           </div>
           <div class="data_box">
             <div class="description">
-              总营业额
+              总营业额{{totalNum}}
             </div>
             <animate-number
-                  from="1"
-                  to="10083"
+                  :from="mystart"
+                  :to="totalNum"
                   duration="1500"
                   easing="easeOutQuad"
                   from-color="#ec4949"
@@ -116,6 +116,23 @@ import Vue from 'vue'
 import VueAnimateNumber from 'vue-animate-number'
 Vue.use(VueAnimateNumber)
 export default {
+  data () {
+    return {
+      mystart: 0,
+      totalNum: 80
+    }
+  },
+  created () {
+    this.getTotalNum()
+    // this.getTotalOrder()
+  },
+  methods: {
+    async getTotalNum () {
+      const { data: res } = await this.$http.get('/orderlist/total')
+      console.log(res)
+      this.totalNum = res
+    }
+  },
   // 此时,页面上的元素,已经被渲染完毕了
   async mounted () {
     // 3.基于准备好的dom，初始化echarts实例
