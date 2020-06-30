@@ -40,7 +40,7 @@
         <el-table-column label="书 名" prop="bookName" align="center"></el-table-column>
         <el-table-column label="作 者" prop="author" align="center"></el-table-column>
         <el-table-column label="价 格" prop="price" align="center" width="50px"></el-table-column>
-        <el-table-column label="类 型" prop="typeId" align="center"  width="50px"></el-table-column>
+        <el-table-column label="类 型" prop="bookType" align="center"  width="50px"></el-table-column>
         <el-table-column label="库 存" prop="repertory" align="center" width="50px"></el-table-column>
         <el-table-column label="出版社" prop="press" align="center" ></el-table-column>
         <el-table-column label="收藏量" prop="cllectNum" align="center" width="70px"></el-table-column>
@@ -93,8 +93,8 @@
         <el-form-item label="价 格" prop="price">
           <el-input v-model="addForm.price"></el-input>
         </el-form-item>
-        <el-form-item label="类 型" prop="typeId">
-          <el-input v-model="addForm.typeId"></el-input>
+        <el-form-item label="类 型" prop="bookType">
+          <el-input v-model="addForm.bookType"></el-input>
         </el-form-item>
          <el-form-item label="库 存" prop="repertory">
           <el-input-number v-model="addForm.repertory" :min="0" label="库 存"></el-input-number>
@@ -139,8 +139,8 @@
         <el-form-item label="价 格" prop="price">
           <el-input v-model="updateForm.price"></el-input>
         </el-form-item>
-        <el-form-item label="类 型" prop="typeId">
-          <el-input v-model="updateForm.typeId"></el-input>
+        <el-form-item label="类 型" prop="bookType">
+          <el-input v-model="updateForm.bookType"></el-input>
         </el-form-item>
          <el-form-item label="库 存" prop="repertory">
           <el-input-number v-model="updateForm.repertory" :min="0" label="库 存"></el-input-number>
@@ -206,9 +206,9 @@ export default {
         author: '',
         price: 0,
         description: '',
-        typeId: 1,
+        bookType: 1,
         repertory: 0,
-        press: 0,
+        press: '',
         cllectNum: 0,
         saleNum: 0,
         publicDate: ''
@@ -314,7 +314,6 @@ export default {
         return this.$message.error('获取商品列表失败！')
       }
       this.booksList = res.records
-      console.log(res.records)
       this.total = res.total
       console.log(res)
     },
@@ -331,7 +330,6 @@ export default {
     // 通过Id删除商品
     async removeById (isbn) {
       const confirmResult = await this.$confirm(
-        console.log(isbn),
         '此操作将永久删除该商品, 是否继续?',
         '提示',
         {
@@ -372,7 +370,7 @@ export default {
     async details (isbn) {
       this.detailDialogVisible = true
       const { data: res } = await this.$http.get('/book/get/' + isbn)
-      this.detailForm = res
+      this.detailForm = res.data
     },
     addBookInfo () {
       this.addDialogVisible = true

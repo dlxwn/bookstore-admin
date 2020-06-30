@@ -352,7 +352,7 @@ export default {
         // 表单预校验失败
         if (!valid) return
         const { data: res } = await this.$http.post('employee/add', this.addEmployeeForm)
-        if (res !== true) {
+        if (res.code !== 200) {
           this.$message.error('添加用户失败！')
         }
         this.$message.success('添加用户成功！')
@@ -381,10 +381,10 @@ export default {
         // console.log(valid)
         // 表单预校验失败
         if (!valid) return
-        const { data: res } = await this.$http.put(
+        const { data: res } = await this.$http.post(
           'employee/edit', this.editEmployeeForm
         )
-        if (res !== true) {
+        if (res.code !== 200) {
           this.$message.error('更新用户信息失败！')
         }
         // 隐藏添加用户对话框
@@ -410,7 +410,7 @@ export default {
         return this.$message.info('已取消删除')
       }
       const { data: res } = await this.$http.delete('employee/del/' + id)
-      if (res !== true) return this.$message.error('删除用户失败！')
+      if (res.code !== 200) return this.$message.error('删除用户失败！')
       this.$message.success('删除用户成功！')
       this.getEmployeeList()
     },

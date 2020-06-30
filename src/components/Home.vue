@@ -145,8 +145,10 @@ export default {
     }
   },
   created () {
-    this.activePath = window.sessionStorage.getItem('activePath')
-    if (this.curuse.curdata.data.isAdmin === '1') {
+    // this.activePath = window.sessionStorage.getItem('activePath')
+    const res = window.sessionStorage.getItem('token')
+    console.log(res)
+    if (res === '1') {
       this.isAdmin = false
     }
   },
