@@ -130,10 +130,6 @@ export default [
       {
         value: '静海区',
         label: '静海区'
-      },
-      {
-        value: '蓟州区',
-        label: '蓟州区'
       }
     ],
     value: '天津市',
