@@ -365,7 +365,7 @@ export default {
     async handleUpdate (isbn) {
       this.updateDialogVisible = true
       const { data: res } = await this.$http.get('/book/get/' + isbn)
-      this.updateForm = res
+      this.updateForm = res.data
     },
     async details (isbn) {
       this.detailDialogVisible = true
