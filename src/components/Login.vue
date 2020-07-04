@@ -100,7 +100,7 @@ export default {
 /* // lang="less" 支持less格式
 // scoped vue的指令，只在当前组件生效 */
 .login_container {
-  background-image: url("https://el-admin.xin/static/img/background.9fbb9927.jpg");
+  background-image: url("https://img01.sogoucdn.com/app/a/100520146/9fbb9927723f155c01b666733e483292");
   align-items: center;
   background-size: cover;
   height: 100%;
